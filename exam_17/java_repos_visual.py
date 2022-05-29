@@ -4,15 +4,15 @@ import requests
 from plotly.graph_objects import Bar
 from plotly import offline
 
-#执行API调用及存储响应
+# 执行API调用及存储响应
 url = 'https://api.github.com/search/repositories?q=language:java&sort=stars'
-headers = {'Accept':'application/vnd.github.v3+json'}
-r = requests.get(url,headers=headers)
+headers = {'Accept': 'application/vnd.github.v3+json'}
+r = requests.get(url, headers=headers)
 print(f"Status code: {r.status_code}")
-#处理结果
+# 处理结果
 response_dict = r.json()
 repo_dicts = response_dict['items']
-repo_links, stars, labels= [], [], []
+repo_links, stars, labels = [], [], []
 for repo_dict in repo_dicts:
     repo_name = repo_dict['name']
     repo_url = repo_dict['html_url']
@@ -25,32 +25,32 @@ for repo_dict in repo_dicts:
     repo_links.append(repo_link)
     labels.append(label)
 
-#可视化
+# 可视化
 data = [{
-    'type':'bar',
-    'x':repo_links,
-    'y':stars,
-    'hovertext':labels,
-    'marker':{
-        'color':'rgb(60,100,150)',
-        'line':{'width':1.5,'color':'rgb(25,25,25)'}
+    'type': 'bar',
+    'x': repo_links,
+    'y': stars,
+    'hovertext': labels,
+    'marker': {
+        'color': 'rgb(60,100,150)',
+        'line': {'width': 1.5, 'color': 'rgb(25,25,25)'}
     },
-    'opacity':0.6
+    'opacity': 0.6
 }]
 
 my_layout = {
-    'title':'Github上最受欢迎的java项目',
-    'xaxis':{
-        'title':'Repository',
-        'titlefont':{'size':24},
-        'tickfont':{'size':14},
+    'title': 'Github上最受欢迎的java项目',
+    'xaxis': {
+        'title': '仓库',
+        'titlefont': {'size': 24},
+        'tickfont': {'size': 14},
     },
-    'yaxis':{
-        'title':'Stars',
-        'titlefont':{'size':24},
-        'tickfont':{'size':14},
+    'yaxis': {
+        'title': '星数',
+        'titlefont': {'size': 24},
+        'tickfont': {'size': 14},
     },
 }
 
-fig = {'data':data,'layout':my_layout}
-offline.plot(fig,filename='java_repos.html')
+fig = {'data': data, 'layout': my_layout}
+offline.plot(fig, filename='java_repos.html')
